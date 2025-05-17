@@ -1,6 +1,6 @@
 export interface ICreateTaskDTO {
   title: string;
-  description: string;
+  description?: string;
 }
 
 export interface ICompleteTaskDTO {

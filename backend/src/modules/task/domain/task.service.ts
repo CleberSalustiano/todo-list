@@ -9,13 +9,13 @@ export default class TaskService {
   async list() {
     return this.taskRepository.list();
   }
-  
+
   async create(dto: ICreateTaskDTO) {
-    if (!dto.title || !dto.description) {
-      throw new AppError("Title and description are required", 400);
+    if (!dto.title) {
+      throw new AppError("Title is required", 400);
     }
 
-    const task = await this.taskRepository.create(dto.title, dto.description);    
+    const task = await this.taskRepository.create(dto.title, dto.description || "");    
 
     return task;
   }

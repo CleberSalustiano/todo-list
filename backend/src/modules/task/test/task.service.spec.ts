@@ -40,9 +40,8 @@ describe("TaskService", () => {
   });
 
   describe("create", () => {
-    it("should throw error if title or description is missing", async () => {
+    it("should throw error if title is missing", async () => {
       await expect(taskService.create({ title: "", description: "" })).rejects.toThrow(AppError);
-      await expect(taskService.create({ title: "Title", description: "" })).rejects.toThrow(AppError);
       await expect(taskService.create({ title: "", description: "Desc" })).rejects.toThrow(AppError);
     });
 
