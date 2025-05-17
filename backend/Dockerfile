@@ -1,35 +1,32 @@
-# Etapa 1: build
+# Etapa 1: Build
 FROM node:18-alpine AS builder
 
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de dependência
 COPY package*.json ./
-COPY tsconfig.json ./
+COPY prisma ./prisma
 
-# Instala dependências
 RUN npm install
+RUN npx prisma generate
 
-# Copia o restante do código-fonte
-COPY ./src ./src
+COPY tsconfig.json ./
+COPY src ./src
 
-# Compila TypeScript
 RUN npm run build
 
-# Etapa 2: imagem final
+RUN ls -l /app/dist
+
+# Etapa 2: Imagem final
 FROM node:18-alpine
 
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia arquivos necessários do estágio anterior
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
-# Expõe a porta correta da aplicação
 EXPOSE 3333
 
-# Comando para rodar a aplicação
+ENV DATABASE_URL=./data/db.sqlite
+
 CMD ["node", "dist/index.js"]

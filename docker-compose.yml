@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3333:3333"
+    volumes:
+      - sqlite-data:/app/prisma  # Persistência do banco SQLite
+      - ./backend/prisma:/app/prisma
+    environment:
+      - DATABASE_URL=file:/app/prisma/dev.db
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - VITE_REACT_API_URL=http://backend:3333
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  sqlite-data:
+
+networks:
+  app-network:
+    driver: bridge
