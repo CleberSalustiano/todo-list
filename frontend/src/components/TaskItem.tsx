@@ -5,8 +5,8 @@ import ConfirmModal from "./ConfirmModal"
 
 interface TaskItemProps {
   task: Task
-  onDelete: (id: string) => Promise<void>
-  onToggleCompletion: (id: string, completed: boolean) => Promise<void>
+  onDelete: (id: number) => Promise<void>
+  onToggleCompletion: (id: number, completed: boolean) => Promise<void>
 }
 
 const TaskItem = ({ task, onDelete, onToggleCompletion }: TaskItemProps) => {
@@ -18,14 +18,14 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: TaskItemProps) => {
     setShowConfirmModal(true)
   }
 
-  const confirmDelete = async () => {
+  const handleConfirmDelete = async () => {
     setShowConfirmModal(false)
     setIsDeleting(true)
     await onDelete(task.id)
     setIsDeleting(false)
   }
 
-  const cancelDelete = () => {
+  const handleCancelDelete = () => {
     setShowConfirmModal(false)
   }
 
@@ -91,8 +91,8 @@ const TaskItem = ({ task, onDelete, onToggleCompletion }: TaskItemProps) => {
         message="Tem certeza que deseja excluir esta tarefa? Esta ação não pode ser desfeita."
         confirmText="Excluir"
         cancelText="Cancelar"
-        onConfirm={confirmDelete}
-        onCancel={cancelDelete}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
       />
     </>
   )

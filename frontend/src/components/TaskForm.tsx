@@ -19,6 +19,11 @@ const TaskForm = ({ onAddTask }: TaskFormProps) => {
       return
     }
 
+    if (!description.trim()) {
+      setError("A descrição da tarefa é obrigatório")
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
 
@@ -61,7 +66,7 @@ const TaskForm = ({ onAddTask }: TaskFormProps) => {
 
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-            Descrição
+            Descrição *
           </label>
           <textarea
             id="description"

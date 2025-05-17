@@ -1,11 +1,9 @@
-"use client"
-
 import { useState, useEffect, useMemo } from "react"
 import TaskList from "./components/TaskList"
 import TaskForm from "./components/TaskForm"
 import TabNavigation from "./components/TabNavigation"
 import type { Task } from "./types/Task"
-import { mockTasks } from "./data/mockData"
+import { completeTask, createTask, getTasks, deleteTask } from "./service/taskService"
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -13,44 +11,26 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState("all")
 
-  useEffect(() => {
-    // TODO: Colocar os dados da API real
-    // Simula o carregamento de dados da API
-    const loadMockData = () => {
-      setIsLoading(true)
-      setTimeout(() => {
-        try {
-          // Ordenar tarefas por data de criação (mais recentes primeiro)
-          const sortedTasks = [...mockTasks].sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-          )
-          setTasks(sortedTasks)
-          setError(null)
-        } catch (err) {
-          console.error("Erro ao carregar tarefas:", err)
-          setError("Erro ao carregar tarefas. Por favor, tente novamente.")
-        } finally {
-          setIsLoading(false)
-        }
-      }, 800) // Simula um pequeno delay de carregamento
+  const fetchTasks = async () => {
+    try {
+      const tasks = await getTasks();
+      setTasks(tasks)
+    } catch (err) {
+      console.error("Erro ao carregar tarefas:", err)
+      setError("Erro ao carregar tarefas. Por favor, tente novamente.")
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    loadMockData()
+  useEffect(() => {
+    fetchTasks()
   }, [])
 
   const addTask = async (title: string, description: string) => {
     try {
-      // Cria uma nova tarefa com ID único (para mock)
-      const newTask: Task = {
-        id: Date.now().toString(),
-        title,
-        description,
-        completed: false,
-        createdAt: new Date().toISOString(),
-      }
-
-      // Adiciona a nova tarefa no início da lista (mais recente primeiro)
-      setTasks([newTask, ...tasks])
+      const newTask = await createTask({ title, description });
+      setTasks([...tasks, newTask])
       return true
     } catch (err) {
       console.error("Erro ao adicionar tarefa:", err)
@@ -59,8 +39,9 @@ function App() {
     }
   }
 
-  const deleteTask = async (id: string) => {
+  const handleDeleteTask = async (id: number) => {
     try {
+      await deleteTask(id);
       setTasks(tasks.filter((task) => task.id !== id))
     } catch (err) {
       console.error("Erro ao excluir tarefa:", err)
@@ -68,8 +49,9 @@ function App() {
     }
   }
 
-  const toggleTaskCompletion = async (id: string, completed: boolean) => {
+  const toggleTaskCompletion = async (id: number, completed: boolean) => {
     try {
+      await completeTask(id, !completed)
       setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !completed } : task)))
     } catch (err) {
       console.error("Erro ao atualizar tarefa:", err)
@@ -122,7 +104,7 @@ function App() {
       ) : (
         <TaskList
           tasks={filteredTasks}
-          onDeleteTask={deleteTask}
+          onDeleteTask={handleDeleteTask}
           onToggleCompletion={toggleTaskCompletion}
           title={getListTitle()}
         />

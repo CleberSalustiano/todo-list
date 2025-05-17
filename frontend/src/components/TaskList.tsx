@@ -3,8 +3,8 @@ import TaskItem from "./TaskItem"
 
 interface TaskListProps {
   tasks: Task[]
-  onDeleteTask: (id: string) => Promise<void>
-  onToggleCompletion: (id: string, completed: boolean) => Promise<void>
+  onDeleteTask: (id: number) => Promise<void>
+  onToggleCompletion: (id: number, completed: boolean) => Promise<void>
   title?: string
 }
 
