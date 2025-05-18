@@ -12,7 +12,7 @@ RUN npm install
 # Copia o restante da aplicação
 COPY . .
 
-EXPOSE 5173
+EXPOSE 3000
 
 # Comando de desenvolvimento com hot reload
 CMD ["npm", "run", "dev"]

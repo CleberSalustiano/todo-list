@@ -9,9 +9,9 @@ services:
     ports:
       - "3333:3333"
     volumes:
-      - sqlite-data:/app/prisma           # Persistência do banco SQLite
-      - ./backend:/app                    # Monta o código do backend para hot reload
-      - /app/node_modules                 # Ignora os node_modules locais
+      - sqlite-data:/app/prisma
+      - ./backend:/app
+      - /app/node_modules
     environment:
       - DATABASE_URL=file:/app/prisma/dev.db
     networks:
@@ -23,12 +23,12 @@ services:
       dockerfile: Dockerfile.dev
     container_name: frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
     volumes:
-      - ./frontend:/app                   # Monta o código do frontend para hot reload
+      - ./frontend:/app
       - /app/node_modules
     environment:
-      - VITE_REACT_API_URL=http://backend:3333
+      - VITE_REACT_API_URL=http://localhost:3333
     depends_on:
       - backend
     networks:
