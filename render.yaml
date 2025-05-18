@@ -3,6 +3,7 @@ services:
     name: backend
     env: node
     branch: main
+    rootDir: backend  
     autoDeploy: true
     plan: free
     buildCommand: |
