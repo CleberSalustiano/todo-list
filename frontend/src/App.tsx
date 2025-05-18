@@ -59,7 +59,6 @@ function App() {
     }
   }
 
-  // Filtra as tarefas com base na aba ativa
   const filteredTasks = useMemo(() => {
     switch (activeTab) {
       case "pending":
@@ -71,7 +70,6 @@ function App() {
     }
   }, [tasks, activeTab])
 
-  // Obtém o título da lista com base na aba ativa
   const getListTitle = () => {
     switch (activeTab) {
       case "pending":
