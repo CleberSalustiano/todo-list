@@ -76,6 +76,19 @@ docker-compose up
 
 ---
 
+## Testes
+
+O backend possui testes unitários utilizando `jest` e o frontend possui testes end-to-end (E2E) com `cypress`. Para rodar os testes, acesse a pasta desejada (`./backend` ou `./frontend`) e execute:
+
+```
+npm run test
+```
+
+Além disso:
+
+* No backend (`./backend`), você pode usar o comando `npm run test:watch` para manter os testes rodando em modo contínuo durante o desenvolvimento. Ele reexecuta os testes automaticamente a cada modificação no código.
+* No frontend (`./frontend`), o comando `npm run test:open` abre a interface gráfica do Cypress, permitindo acompanhar a execução dos testes em tempo real no navegador.
+
 ## Observações
 
 * As portas padrão são `3333` para o backend e `3000` para o frontend.
