@@ -1,0 +1,77 @@
+# TODO LIST
+
+## Ambiente de Desenvolvimento
+
+### Sem Docker
+
+Para rodar o backend e o frontend em ambiente de desenvolvimento **sem Docker**, acesse cada uma das pastas (`./backend` e `./frontend`) via terminal e execute:
+
+```bash
+npm run dev
+```
+
+Cada pasta contém um arquivo `local.env`, que pode ser duplicado e renomeado para `.env` para facilitar o desenvolvimento local:
+
+```bash
+cp local.env .env
+```
+
+---
+
+### Com Docker
+
+Para rodar o backend e o frontend utilizando Docker em ambiente de desenvolvimento, execute:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+Ou, caso as imagens já tenham sido criadas anteriormente:
+
+```bash
+docker-compose -f docker-compose.dev.yml up
+```
+
+Esse comando irá montar os volumes locais e ativar o hot reload automaticamente (usando `ts-node-dev` no backend e `Vite` no frontend).
+
+---
+
+## Ambiente de Produção / Instância Buildada
+
+Para rodar uma instância da aplicação (frontend e backend já buildados), utilizando Docker:
+
+```bash
+docker-compose up --build
+```
+
+Ou, caso as imagens já estejam prontas:
+
+```bash
+docker-compose up
+```
+
+---
+
+## Estrutura do Projeto
+
+```
+.
+├── backend/
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   └── ...
+├── frontend/
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   └── ...
+├── docker-compose.yml             # Produção
+└── docker-compose.dev.yml         # Desenvolvimento
+```
+
+---
+
+## Observações
+
+* As portas padrão são `3333` para o backend e `3000` para o frontend.
+* O backend utiliza **SQLite** por padrão (`file:/app/prisma/dev.db`).
+* O frontend consome a API via `VITE_REACT_API_URL`, configurável no `.env`.
