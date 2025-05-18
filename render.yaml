@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    branch: main
+    autoDeploy: true
+    plan: free
+    ports:
+      - 3333
+    mounts:
+      - type: volume
+        volumeName: sqlite-data
+        mountPath: /app/prisma
+    envVars:
+      - key: DATABASE_URL
+        value: "file:/app/prisma/dev.db"
+
+volumes:
+  - name: sqlite-data
