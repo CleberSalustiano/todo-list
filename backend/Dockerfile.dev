@@ -1,0 +1,26 @@
+# Dockerfile.dev
+FROM node:18-alpine
+
+# Set timezone and install optional tools
+RUN apk add --no-cache bash
+
+WORKDIR /app
+
+# Instala dependências
+COPY package*.json ./
+COPY prisma ./prisma
+
+RUN npm install
+
+# Copia os arquivos da aplicação
+COPY . .
+
+# Gera o client do Prisma
+RUN npx prisma generate
+
+EXPOSE 3333
+
+ENV DATABASE_URL=./data/db.sqlite
+
+# Usa ts-node-dev para reload automático
+CMD ["npx", "ts-node-dev", "--respawn", "--transpile-only", "src/index.ts"]

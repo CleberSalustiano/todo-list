@@ -1,0 +1,18 @@
+# Dockerfile.dev
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copia apenas os arquivos necessários para instalar as dependências
+COPY package*.json ./
+
+RUN npm install
+
+# Copia o restante da aplicação
+COPY . .
+
+EXPOSE 5173
+
+# Comando de desenvolvimento com hot reload
+CMD ["npm", "run", "dev"]
