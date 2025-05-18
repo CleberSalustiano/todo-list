@@ -1,10 +1,10 @@
 import { AppError } from "../../../shared/errors/AppError";
 import { ICompleteTaskDTO, ICreateTaskDTO } from "./task.dto";
-import TaskRepository from "./task.repository.interface";
+import ITaskRepository from "./task.repository.interface";
 
 export default class TaskService {
 
-  constructor(private taskRepository: TaskRepository) {}
+  constructor(private taskRepository: ITaskRepository) {}
 
   async list() {
     return this.taskRepository.list();
