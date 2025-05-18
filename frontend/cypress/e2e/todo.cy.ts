@@ -21,12 +21,32 @@ describe("Todo App", () => {
     cy.get('[data-cy="task-item"]').should("contain", "Nova tarefa de teste")
   })
 
+  it("deve filtrar tarefas pendentes", () => {
+    // Clica na aba de tarefas pendentes
+    cy.get('[data-cy="tab-pending"]').click()
+
+    // Verifica se todas as tarefas exibidas não estão concluídas
+    cy.get('[data-cy="task-item"]').each(($item) => {
+      cy.wrap($item).find('[data-cy="task-checkbox"]').should("not.be.checked")
+    })
+  })
+
   it("deve marcar uma tarefa como concluída", () => {
     // Encontra a primeira tarefa não concluída e marca como concluída
     cy.get('[data-cy="task-item"]').find('[data-cy="task-checkbox"]').not("[checked]").first().click()
 
     // Verifica se a tarefa foi marcada como concluída (tem a classe line-through)
     cy.get('[data-cy="task-item"]').find('[data-cy="task-title"].line-through').should("exist")
+  })
+
+  it("deve filtrar tarefas concluídas", () => {
+    // Clica na aba de tarefas concluídas
+    cy.get('[data-cy="tab-completed"]').click()
+
+    // Verifica se todas as tarefas exibidas estão concluídas
+    cy.get('[data-cy="task-item"]').each(($item) => {
+      cy.wrap($item).find('[data-cy="task-checkbox"]').should("be.checked")
+    })
   })
 
   it("deve excluir uma tarefa", () => {
@@ -67,25 +87,5 @@ describe("Todo App", () => {
 
     // Verifica se a mensagem de erro é exibida
     cy.contains("O título da tarefa é obrigatório").should("be.visible")
-  })
-
-  it("deve filtrar tarefas pendentes", () => {
-    // Clica na aba de tarefas pendentes
-    cy.get('[data-cy="tab-pending"]').click()
-
-    // Verifica se todas as tarefas exibidas não estão concluídas
-    cy.get('[data-cy="task-item"]').each(($item) => {
-      cy.wrap($item).find('[data-cy="task-checkbox"]').should("not.be.checked")
-    })
-  })
-
-  it("deve filtrar tarefas concluídas", () => {
-    // Clica na aba de tarefas concluídas
-    cy.get('[data-cy="tab-completed"]').click()
-
-    // Verifica se todas as tarefas exibidas estão concluídas
-    cy.get('[data-cy="task-item"]').each(($item) => {
-      cy.wrap($item).find('[data-cy="task-checkbox"]').should("be.checked")
-    })
   })
 })
