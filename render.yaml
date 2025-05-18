@@ -3,9 +3,11 @@ services:
     name: backend
     env: docker
     dockerfilePath: ./backend/Dockerfile
+    buildCommand: ""
     branch: main
     autoDeploy: true
     plan: free
+    context: ./backend   
     envVars:
       - key: DATABASE_URL
         value: "file:/app/prisma/dev.db"
