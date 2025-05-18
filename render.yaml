@@ -1,13 +1,15 @@
 services:
   - type: web
     name: backend
-    env: docker
-    dockerfilePath: ./backend/Dockerfile
-    buildCommand: ""
+    env: node
     branch: main
     autoDeploy: true
     plan: free
-    context: ./backend   
+    buildCommand: |
+      npm install
+      npx prisma generate
+      npm run build
+    startCommand: node dist/index.js
     envVars:
       - key: DATABASE_URL
-        value: "file:/app/prisma/dev.db"
+        value: "file:./prisma/dev.db"
