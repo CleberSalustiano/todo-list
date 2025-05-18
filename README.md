@@ -4,6 +4,8 @@
 
 [Acesse o Todo List aqui](https://todo-list-xi-black-66.vercel.app/)
 
+> **Importante:** A aplicação está publicada gratuitamente, com o backend hospedado no [Render](https://render.com) e o frontend no [Vercel](https://vercel.com). Como o backend utiliza um plano gratuito, ele pode demorar um pouco para responder na primeira requisição após um longo período de inatividade.
+
 ## Ambiente de Desenvolvimento
 
 ### Sem Docker
