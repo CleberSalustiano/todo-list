@@ -2,13 +2,14 @@ describe("Todo App", () => {
   beforeEach(() => {
     // Visita a página inicial antes de cada teste
     cy.visit("/")
-
-    // Aguarda o carregamento inicial das tarefas (simulado)
-    cy.get('[data-cy="task-list"]', { timeout: 5000 }).should("be.visible")
   })
 
-  it("deve exibir a lista de tarefas", () => {
-    cy.get('[data-cy="task-item"]').should("have.length.at.least", 1)
+  it("deve validar o formulário ao tentar adicionar uma tarefa sem título", () => {
+    // Tenta enviar o formulário sem preencher o título
+    cy.get('[data-cy="add-task-button"]').click()
+
+    // Verifica se a mensagem de erro é exibida
+    cy.contains("O título da tarefa é obrigatório").should("be.visible")
   })
 
   it("deve adicionar uma nova tarefa", () => {
@@ -19,6 +20,10 @@ describe("Todo App", () => {
 
     // Verifica se a tarefa foi adicionada à lista
     cy.get('[data-cy="task-item"]').should("contain", "Nova tarefa de teste")
+  })
+
+  it("deve exibir a lista de tarefas", () => {
+    cy.get('[data-cy="task-item"]').should("have.length.at.least", 1)
   })
 
   it("deve filtrar tarefas pendentes", () => {
@@ -49,22 +54,6 @@ describe("Todo App", () => {
     })
   })
 
-  it("deve excluir uma tarefa", () => {
-    // Armazena o número inicial de tarefas
-    cy.get('[data-cy="task-item"]').then(($items) => {
-      const initialCount = $items.length
-
-      // Encontra o botão de excluir da primeira tarefa e clica nele
-      cy.get('[data-cy="delete-task-button"]').first().click()
-
-      // Confirma na modal
-      cy.get('[data-cy="confirm-modal-confirm"]').click()
-
-      // Verifica se a tarefa foi removida da lista
-      cy.get('[data-cy="task-item"]').should("have.length", initialCount - 1)
-    })
-  })
-
   it("deve cancelar a exclusão de uma tarefa", () => {
     // Armazena o número inicial de tarefas
     cy.get('[data-cy="task-item"]').then(($items) => {
@@ -81,11 +70,19 @@ describe("Todo App", () => {
     })
   })
 
-  it("deve validar o formulário ao tentar adicionar uma tarefa sem título", () => {
-    // Tenta enviar o formulário sem preencher o título
-    cy.get('[data-cy="add-task-button"]').click()
+  it("deve excluir uma tarefa", () => {
+    // Armazena o número inicial de tarefas
+    cy.get('[data-cy="task-item"]').then(($items) => {
+      const initialCount = $items.length
 
-    // Verifica se a mensagem de erro é exibida
-    cy.contains("O título da tarefa é obrigatório").should("be.visible")
+      // Encontra o botão de excluir da primeira tarefa e clica nele
+      cy.get('[data-cy="delete-task-button"]').first().click()
+
+      // Confirma na modal
+      cy.get('[data-cy="confirm-modal-confirm"]').click()
+
+      // Verifica se a tarefa foi removida da lista
+      cy.get('[data-cy="task-item"]').should("have.length", initialCount - 1)
+    })
   })
 })
